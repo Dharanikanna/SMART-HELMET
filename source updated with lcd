@@ -1,0 +1,88 @@
+/* project by DD ;)*/
+
+#include <LiquidCrystal.h>
+#include <SoftwareSerial.h>
+
+int sensor = 6;
+int sensorA = A0;
+int led = 13;
+int x = 7;
+SoftwareSerial mySerial(9, 10);
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+void setup() {
+
+  pinMode(6, INPUT);
+  pinMode(A0, INPUT);
+
+  lcd.begin(16, 2);
+  Serial.begin(9600);
+  mySerial.begin(9600);
+  delay(1000);
+
+  pinMode(led, OUTPUT);
+  pinMode(x, OUTPUT);
+}
+
+void loop() {
+
+  int alcohollimit = analogRead(A0);
+  int alcoholvalue = digitalRead(6);
+  Serial.print("limit = ");
+  Serial.println(alcohollimit);
+  Serial.print("value = ");
+  Serial.println(alcoholvalue);
+  delay(100);
+  screen();
+
+  if (analogRead(A0)>=300) {
+    digitalWrite(led, HIGH);
+    digitalWrite(x, HIGH);
+    sendmessage();
+    //if (Serial.available() > 0)
+    // switch (Serial.read())
+
+    Serial.println("SMS SENDING");
+
+  }
+  else
+  {
+    digitalWrite(led, LOW);
+    digitalWrite(x, LOW);
+  }
+}
+void screen() {
+ // if (Serial.available()) {
+ //   delay(100);
+   // lcd.clear();
+    lcd.setCursor(0,0);
+   /* for (int positioncounter=0;positioncounter >13;positioncounter++){
+    lcd.scrollDisplayLeft();
+    delay(150);}*/
+    lcd.print("limit = ");
+    lcd.println(analogRead(A0));
+    lcd.setCursor(0,1);
+    lcd.print("value = ");
+    lcd.println(digitalRead(6));
+    
+    /*while (Serial.available() > 0) {
+      lcd.write(Serial.read());
+      lcd.setCursor(0, 2);
+      lcd.print("dharani kanna");
+      }*/
+    /*  if(digitalRead(6)==0){
+      lcd.setCursor(0,1);
+      lcd.print("sending message");
+      }*/
+  }
+void sendmessage() {
+  mySerial.println("AT+CMGF=1");
+  delay(1000);
+  mySerial.println("AT+CMGS=\"+919698208798\"\r");
+  delay(100);
+  mySerial.println("HE IS DRUNKEN");
+  delay(1000);
+  mySerial.println((char)26);
+  delay(100);
+}

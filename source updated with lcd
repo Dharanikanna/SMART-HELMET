@@ -53,29 +53,14 @@ void loop() {
   }
 }
 void screen() {
- // if (Serial.available()) {
- //   delay(100);
-   // lcd.clear();
-    lcd.setCursor(0,0);
-   /* for (int positioncounter=0;positioncounter >13;positioncounter++){
-    lcd.scrollDisplayLeft();
-    delay(150);}*/
+ 
     lcd.print("limit = ");
     lcd.println(analogRead(A0));
     lcd.setCursor(0,1);
     lcd.print("value = ");
     lcd.println(digitalRead(6));
-    
-    /*while (Serial.available() > 0) {
-      lcd.write(Serial.read());
-      lcd.setCursor(0, 2);
-      lcd.print("dharani kanna");
-      }*/
-    /*  if(digitalRead(6)==0){
-      lcd.setCursor(0,1);
-      lcd.print("sending message");
-      }*/
-  }
+     }
+     
 void sendmessage() {
   mySerial.println("AT+CMGF=1");
   delay(1000);

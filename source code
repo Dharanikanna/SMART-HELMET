@@ -44,7 +44,7 @@ else
 void sendmessage() {
   mySerial.println("AT+CMGF=1");
   delay(1000);
-  mySerial.println("AT+CMGS=\"+919698208798\"\r");
+  mySerial.println("AT+CMGS=\"+91xxxxxxxxxx\"\r");
   delay(100);
   mySerial.println("HE IS DRUNKEN");
   delay(1000);

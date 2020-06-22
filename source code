@@ -1,0 +1,53 @@
+#include <SoftwareSerial.h>
+
+int sensor = 6;       //digital pin
+int sensorA = A0;     //analog pin
+int led = 13;         //led pin
+int tx = 7;           //RF transmitter pin
+SoftwareSerial mySerial(9, 10);     //UARTs (GSM)
+
+void setup() {
+  pinMode(6, INPUT);
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+  mySerial.begin(9600);
+  delay(1000);
+  pinMode(led, OUTPUT);
+  pinMode(tx, OUTPUT);
+}
+
+void loop() {
+  int alcohollimit = analogRead(A0);
+  int alcoholvalue = digitalRead(6);
+  Serial.print("limit = ");
+  Serial.println(alcohollimit);
+  Serial.print("value = ");
+  Serial.println(alcoholvalue);
+  delay(100);
+
+if (digitalRead(sensor) == LOW) {
+    digitalWrite(led, HIGH);
+    digitalWrite(tx, HIGH);
+    if (Serial.available() == 0)
+      switch (Serial.read())
+        sendmessage();
+    Serial.println("SMS SENDING");
+  }
+
+else
+  {
+    digitalWrite(led, LOW);
+    digitalWrite(tx, LOW);
+  }
+}
+
+void sendmessage() {
+  mySerial.println("AT+CMGF=1");
+  delay(1000);
+  mySerial.println("AT+CMGS=\"+919698208798\"\r");
+  delay(100);
+  mySerial.println("HE IS DRUNKEN");
+  delay(1000);
+  mySerial.println((char)26);
+  delay(100);
+}
